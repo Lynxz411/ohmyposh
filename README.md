@@ -1,2 +1,10 @@
-# ohmyposh
-ohmyposh biar makin kece aja
+# Lynxz OhMyPosh Theme
+
+Custom OhMyPosh theme for Fish shell.
+
+## Install
+
+```bash
+git clone https://github.com/Lynxz411/ohmyposh.git
+cd lynxz-ohmyposh-theme
+./install.sh
