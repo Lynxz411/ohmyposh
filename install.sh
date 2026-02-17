@@ -38,6 +38,37 @@ if ! command -v oh-my-posh &> /dev/null; then
 fi
 
 # -----------------------------
+# Install JetBrainsMono Nerd Font (if missing)
+# -----------------------------
+if fc-list | grep -qi "JetBrainsMono Nerd"; then
+    echo "✅ JetBrainsMono Nerd Font already installed."
+else
+    echo "⚠ JetBrainsMono Nerd Font not found. Installing..."
+
+    FONT_DIR="$HOME/.local/share/fonts"
+    mkdir -p "$FONT_DIR"
+
+    TEMP_DIR="$(mktemp -d)"
+    cd "$TEMP_DIR"
+
+    echo "Downloading font..."
+    curl -fsSL -o JetBrainsMono.zip \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+
+    unzip -q JetBrainsMono.zip -d JetBrainsMono
+    cp JetBrainsMono/*.ttf "$FONT_DIR"
+
+    cd -
+    rm -rf "$TEMP_DIR"
+
+    fc-cache -fv
+
+    echo "✅ JetBrainsMono Nerd Font installed."
+fi
+
+echo ""
+
+# -----------------------------
 # Create Config Directory
 # -----------------------------
 mkdir -p "$TARGET_DIR"
