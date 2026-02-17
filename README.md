@@ -6,5 +6,7 @@ Custom OhMyPosh theme for Fish shell.
 
 ```bash
 git clone https://github.com/Lynxz411/ohmyposh.git
-cd lynxz-ohmyposh-theme
+cd ohmyposh
+chmod +x install.sh
 ./install.sh
+
