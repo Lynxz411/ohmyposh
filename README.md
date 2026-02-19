@@ -1,6 +1,8 @@
 # Lynxz OhMyPosh Theme
 
 Custom OhMyPosh theme for Fish shell.
+
+
 (if you wanna see the ohmyposh theme you can check https://github.com/Lynxz411/lynxz-fastfetch) 
 
 ## Install
