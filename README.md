@@ -13,7 +13,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/Lynxz411/Lynxz-ohmyposh/
 ## Or use this
 
 ```bash
-git clone https://github.com/Lynxz411/ohmyposh.git
+git clone https://github.com/Lynxz411/Lynxz-ohmyposh.git
 cd Lynxz-ohmyposh
 chmod +x install.sh
 ./install.sh
