@@ -7,26 +7,20 @@ THEME_NAME="lynxz.omp.json"
 TARGET_DIR="$HOME/.config/ohmyposh"
 TARGET_THEME="$TARGET_DIR/$THEME_NAME"
 
-echo "======================================"
-echo " Lynxz OhMyPosh Universal Installer"
-echo "======================================"
+echo "========================="
+echo " Lynxz OhMyPosh Installer"
+echo "========================="
 echo ""
 
 # -----------------------------
-# Detect Environment & Distro
+# Detect Distro
 # -----------------------------
-# check termux
-if [[ -n "$PREFIX" && "$PREFIX" == *"/com.termux"* ]]; then
-    DISTRO="termux"
-    IS_TERMUX=true
-    echo "📱 Termux environment detected."
-elif [ -f /etc/os-release ]; then
+if [ -f /etc/os-release ]; then
     . /etc/os-release
     DISTRO=$ID
-    IS_TERMUX=false
     echo "Detected distro: $DISTRO"
 else
-    echo "❌ Cannot detect Linux distro or Termux."
+    echo "❌ Cannot detect Linux distro."
     exit 1
 fi
 
@@ -35,10 +29,6 @@ fi
 # -----------------------------
 install_deps() {
     case "$DISTRO" in
-        termux)
-            pkg update -y
-            pkg install -y curl unzip fontconfig
-        ;;
         arch|cachyos|manjaro)
             sudo pacman -Sy --needed curl unzip fontconfig
         ;;
@@ -66,16 +56,12 @@ echo ""
 # -----------------------------
 # Check & Auto Install Oh My Posh
 # -----------------------------
-# BUG FIX: Bagian 'exit 1' dihapus agar script bisa lanjut ke proses install
 if ! command -v oh-my-posh &> /dev/null; then
     echo "⚠ oh-my-posh not found. Auto installing now..."
     
     install_deps
 
     case "$DISTRO" in
-        termux)
-            pkg install -y oh-my-posh
-        ;;
         arch|cachyos|manjaro)
             sudo pacman -S --needed oh-my-posh
         ;;
@@ -100,47 +86,30 @@ echo ""
 # -----------------------------
 # Install JetBrainsMono Nerd Font (if missing)
 # -----------------------------
-if [ "$IS_TERMUX" = true ]; then
-    # Logika font khusus Termux
-    if [ ! -f "$HOME/.termux/font.ttf" ]; then
-        echo "⚠ JetBrainsMono Nerd Font not found. Installing for Termux..."
-        mkdir -p "$HOME/.termux"
-        echo "Downloading font..."
-        curl -fLo "$HOME/.termux/font.ttf" \
-            "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf"
-        
-        termux-reload-settings 2>/dev/null || true
-        echo "✅ JetBrainsMono Nerd Font installed for Termux."
-    else
-        echo "✅ JetBrainsMono Nerd Font already installed in Termux."
-    fi
+if fc-list | grep -qi "JetBrainsMono Nerd"; then
+    echo "✅ JetBrainsMono Nerd Font already installed."
 else
-    # Logika font Linux biasa
-    if fc-list | grep -qi "JetBrainsMono Nerd"; then
-        echo "✅ JetBrainsMono Nerd Font already installed."
-    else
-        echo "⚠ JetBrainsMono Nerd Font not found. Installing..."
+    echo "⚠ JetBrainsMono Nerd Font not found. Installing..."
 
-        FONT_DIR="$HOME/.local/share/fonts"
-        mkdir -p "$FONT_DIR"
+    FONT_DIR="$HOME/.local/share/fonts"
+    mkdir -p "$FONT_DIR"
 
-        TEMP_DIR="$(mktemp -d)"
-        cd "$TEMP_DIR"
+    TEMP_DIR="$(mktemp -d)"
+    cd "$TEMP_DIR"
 
-        echo "Downloading font..."
-        curl -fsSL -o JetBrainsMono.zip \
-            https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+    echo "Downloading font..."
+    curl -fsSL -o JetBrainsMono.zip \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
 
-        unzip -q JetBrainsMono.zip -d JetBrainsMono
-        cp JetBrainsMono/*.ttf "$FONT_DIR"
+    unzip -q JetBrainsMono.zip -d JetBrainsMono
+    cp JetBrainsMono/*.ttf "$FONT_DIR"
 
-        cd -
-        rm -rf "$TEMP_DIR"
+    cd -
+    rm -rf "$TEMP_DIR"
 
-        fc-cache -fv
+    fc-cache -fv
 
-        echo "✅ JetBrainsMono Nerd Font installed."
-    fi
+    echo "✅ JetBrainsMono Nerd Font installed."
 fi
 
 echo ""
