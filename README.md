@@ -17,4 +17,11 @@ git clone https://github.com/Lynxz411/Lynxz-ohmyposh.git
 cd Lynxz-ohmyposh
 chmod +x install.sh
 ./install.sh
+```
 
+## Uninstall 
+
+```bash
+cd Lynxz-ohmyposh
+chmod +x uninstall.sh
+./uninstall.sh
