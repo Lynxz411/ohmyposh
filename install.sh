@@ -2,7 +2,6 @@
 
 set -e
 
-# Sudah diganti ke URL repo yang benar (Lynxz-ohmyposh)
 REPO_RAW_BASE="https://raw.githubusercontent.com/Lynxz411/Lynxz-ohmyposh/main"
 THEME_NAME="lynxz.omp.json"
 TARGET_DIR="$HOME/.config/ohmyposh"
@@ -14,7 +13,7 @@ echo "======================================"
 echo ""
 
 # -----------------------------
-# Detect Shell (Logika diperbaiki)
+# Detect Shell 
 # -----------------------------
 CURRENT_SHELL="$(basename "$SHELL")"
 
