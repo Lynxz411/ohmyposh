@@ -13,6 +13,49 @@ echo "======================================"
 echo ""
 
 # -----------------------------
+# Detect Distro
+# -----------------------------
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    DISTRO=$ID
+else
+    echo "❌ Cannot detect Linux distro."
+    exit 1
+fi
+
+echo "Detected distro: $DISTRO"
+
+
+# -----------------------------
+# Install dependencies
+# -----------------------------
+install_deps() {
+
+case "$DISTRO" in
+
+arch)
+    sudo pacman -Sy --needed curl unzip fontconfig
+;;
+
+ubuntu|debian)
+    sudo apt update
+    sudo apt install -y curl unzip fontconfig
+;;
+
+fedora)
+    sudo dnf install -y curl unzip fontconfig
+;;
+
+*)
+    echo "⚠ Unsupported distro. Install curl unzip fontconfig manually."
+;;
+
+esac
+
+}
+
+
+# -----------------------------
 # Detect Shell 
 # -----------------------------
 CURRENT_SHELL="$(basename "$SHELL")"
@@ -25,9 +68,48 @@ echo ""
 # -----------------------------
 if ! command -v oh-my-posh &> /dev/null; then
     echo "❌ Oh My Posh is not installed."
-    echo "Install from: https://ohmyposh.dev"
+    echo "Auto install now"
     exit 1
 fi
+
+# -----------------------------
+# Install Oh My Posh
+# -----------------------------
+if ! command -v oh-my-posh &> /dev/null; then
+
+echo "⚠ oh-my-posh not found. Installing..."
+
+install_deps
+
+case "$DISTRO" in
+
+arch)
+    sudo pacman -S --needed oh-my-posh
+;;
+
+ubuntu|debian)
+    curl -s https://ohmyposh.dev/install.sh | bash
+;;
+
+fedora)
+    sudo dnf install -y oh-my-posh
+;;
+
+*)
+    curl -s https://ohmyposh.dev/install.sh | bash
+;;
+
+esac
+
+echo "✅ oh-my-posh installed"
+
+else
+
+echo "✅ oh-my-posh already installed"
+
+fi
+
+echo ""
 
 # -----------------------------
 # Install JetBrainsMono Nerd Font (if missing)
